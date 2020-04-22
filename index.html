@@ -8,9 +8,13 @@
   </head>
   <body>
     <h1>Background Generator</h1>
-    <input class="input-color-one" type="color" name="color1" />
-    <input class="input-color-two" type="color" name="color2" />
-    <input class="input-range" type="range" min="1" max="360" />
+    <div id="colors" class="input-colors">
+      <input id="color-1" class="input-color" type="color" name="color1" />
+      <input id="color-2" class="input-color" type="color" name="color2" />
+    </div>
+    <div class="range-colors">
+      <input class="input-range" type="range" min="1" max="360" value="5" />
+    </div>
     <h2>Current CSS Background</h2>
     <h3></h3>
 
