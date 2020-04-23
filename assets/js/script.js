@@ -1,53 +1,57 @@
-const currentBackground = document.querySelector('h3');
-const color_one = document.getElementById('color-1');
-const color_two = document.getElementById('color-2');
+const currentBackgroundText = document.querySelector('h3');
 const body = document.querySelector('body');
-const range = document.querySelector('.input-range');
+const degreeSlider = document.querySelector('.input-range');
 const colors = document.getElementById('colors');
+const colorArr = document.getElementsByClassName('input-color');
+const addColor = document.getElementById('js--add-color');
 
-let newColor = document.createElement('input');
+/*let newColor = document.createElement('input');
 newColor.type = 'color';
 newColor.className = 'input-color';
-colors.appendChild(newColor);
+colors.appendChild(newColor);*/
 
-const colorArr = document.getElementsByClassName('input-color');
-
-function resetValues() {
-  color_one.value = 'rgb(134, 134, 134)';
-  color_two.value = 0;
-  range.value = 0;
-}
-
-function setGradient2() {
-  let linearGrad = `linear-gradient(${range.value}deg`;
+function returnGradient() {
+  let linearGrad = `linear-gradient(${degreeSlider.value}deg`;
 
   for (let i = 0; i < colorArr.length; i++) {
     linearGrad = linearGrad.concat(', ', colorArr[i].value);
-    //console.log(colorArr[i].value);
   }
-  linearGrad = linearGrad.concat(')');
-  console.log(linearGrad);
-  //body.style.background = `linear-gradient(${range.value}deg, ${color_one.value}, ${color_two.value})`;
 
-  body.style.background = linearGrad;
-  currentBackground.textContent = body.style.background + ';';
+  linearGrad = linearGrad.concat(')');
+  return linearGrad;
+}
+
+function setEvent(el, event, func) {
+  el.addEventListener(event, func);
+}
+
+function setNewColor() {
+  let newColor = document.createElement('input');
+  newColor.type = 'color';
+  newColor.className = 'input-color';
+  newColor.id = `color-${colorArr.length + 1}`;
+  colors.insertBefore(
+    newColor,
+    colors.childNodes[colors.childNodes.length - 2]
+  );
+  setEvent(colorArr[colorArr.length - 1], 'input', setGradient);
 }
 
 function setGradient() {
-  body.style.background = `linear-gradient(${range.value}deg, ${color_one.value}, ${color_two.value})`;
-  currentBackground.textContent = body.style.background + ';';
+  body.style.background = returnGradient();
+  currentBackgroundText.textContent = body.style.background + ';';
 }
 
 function setDegree() {
-  body.style.background = `linear-gradient(${range.value}deg)`;
-  currentBackground.textContent = body.style.background + ';';
+  body.style.background = returnGradient();
+  currentBackgroundText.textContent = body.style.background + ';';
 }
-
-/*color_one.addEventListener('input', setGradient2);
-color_two.addEventListener('input', setGradient2);*/
 
 for (let i = 0; i < colorArr.length; i++) {
-  colorArr[i].addEventListener('input', setGradient2);
+  setEvent(colorArr[i], 'input', setGradient);
+  console.log('hello');
 }
 
-range.addEventListener('input', setDegree);
+setEvent(degreeSlider, 'input', setDegree);
+
+setEvent(addColor, 'click', setNewColor);
